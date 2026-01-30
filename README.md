@@ -21,36 +21,39 @@ A stunning Next.js dashboard that discovers and ranks money-making opportunities
 
 #### 1. Opportunity Feed
 - AI-scored opportunities (0-100 scale)
-- Multi-source: crypto arbitrage, prediction markets, options, forex
+- Multi-source: crypto arbitrage, prediction markets, DeFi opportunities
 - Real-time filtering and search
 - Tags: risk level, timing, potential profit
-- One-click action buttons
+- One-click action buttons with direct links
 
 #### 2. Market Monitor
-- Live prices: BTC, ETH, SOL, NVDA, USDC
-- Price change indicators
-- Support for 100+ assets (extensible)
+- **Live crypto prices from CoinGecko API**: BTC, ETH, SOL, BNB, ADA, XRP, DOT, DOGE
+- Price change indicators (24h)
+- Automatic refresh every 60 seconds
+- Support for 100+ assets via CoinGecko
 
 #### 3. Trend Scanner
-- Tracks trending topics across news, social, tech
+- **Real-time trends from News & Reddit**: Tracks trending topics across multiple sources
 - Growth velocity indicators
-- Sentiment analysis (Bullish/Bearish/Neutral)
+- Sentiment analysis (Bullish/Bearish/Neutral/Very Bullish)
 - Visual growth bars with animations
+- Combines news sentiment with social media buzz
 
 #### 4. Alert Center
-- Real-time notifications
+- Real-time notifications from API data
 - Customizable alerts
 - Priority-based filtering
 - Timestamp tracking
 
 ### 🚀 Tech Stack
 
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js 14 (App Router) with React 18
 - **Language:** TypeScript 5.4
-- **Styling:** Tailwind CSS + shadcn/ui components
+- **Styling:** Tailwind CSS 3.4 + shadcn/ui components
 - **Animations:** Framer Motion 11
 - **Icons:** Lucide React
 - **Charts:** Recharts (ready for integration)
+- **APIs:** CoinGecko, Polymarket, GNews, Reddit (public)
 
 ## 🛠️ Installation
 
@@ -87,18 +90,17 @@ Beautiful cards displaying each opportunity with:
 - Potential profit indicator
 - Risk level assessment
 - Timing recommendation
-- Action button
+- Action button with external link
 
 ### MarketMonitor
 Real-time market data widget with:
 - Asset symbol
 - Current price
-- Price change percentage
-- Color-coded (green for up, red for down)
+- Price change percentage (color-coded)
 
 ### TrendScanner
 Tracks trending topics with:
-- Topic name and source
+- Topic name and source (News/Reddit)
 - Growth percentage
 - Visual progress bar
 - Sentiment label
@@ -110,9 +112,30 @@ Notification system with:
 - Timestamp
 - Alert type indicators
 
+## 📁 Project Structure
+
+```
+opp-radar/
+├── app/
+│   ├── page.tsx          # Main dashboard page (client component)
+│   ├── layout.tsx        # Root layout with metadata
+│   └── globals.css       # Global styles and Tailwind
+├── lib/
+│   ├── types.ts          # TypeScript interfaces
+│   └── api/
+│       ├── index.ts      # Main API aggregator
+│       ├── coingecko.ts  # CoinGecko API integration
+│       ├── polymarket.ts # Polymarket API integration
+│       ├── news.ts       # GNews API + sentiment analysis
+│       └── social.ts     # Reddit API + sentiment tracking
+├── public/               # Static assets
+├── .env.example          # Environment variables template
+└── package.json          # Dependencies
+```
+
 ## 🔮 Future Enhancements
 
-- [ ] Connect to real APIs (Polymarket, CoinGecko, NewsAPI)
+- [x] Connect to real APIs (Polymarket, CoinGecko, GNews, Reddit)
 - [ ] User authentication and personalization
 - [ ] Custom alert rules and notifications
 - [ ] Historical performance tracking
@@ -121,15 +144,51 @@ Notification system with:
 - [ ] Telegram bot integration
 - [ ] Real-time WebSocket updates
 - [ ] Machine learning predictions
+- [ ] More arbitrage opportunities across exchanges
 
-## 📝 Mock Data
+## 📡 API Integrations
 
-Currently uses realistic mock data for demonstration. Easy to replace with real API calls:
+The app now integrates with multiple real-time data sources:
 
-```typescript
-// Replace generateOpportunities() with API call
-const opportunities = await fetch('/api/opportunities').then(r => r.json())
+### 1. CoinGecko API (Free tier)
+- Provides live cryptocurrency prices and market data
+- Fetches top 8 cryptocurrencies by market cap
+- No API key required for basic usage
+- Data cached for 60 seconds
+
+### 2. Polymarket API
+- Fetches prediction markets with volume and liquidity
+- Analyzes market inefficiencies and price spreads
+- Generates trading opportunities based on token prices
+- Data cached for 120 seconds
+
+### 3. GNews API (Optional)
+- Provides trending news articles about crypto, trading, and markets
+- Sentiment analysis on news headlines
+- Sign up at https://gnews.io/ for a free API key
+- Add to `.env.local`: `NEXT_PUBLIC_GNEWS_API_KEY=your_key_here`
+- Falls back to sample data if no key provided
+
+### 4. Reddit API (Public, no key required)
+- Fetches hot posts from crypto and trading subreddits
+- Analyzes social sentiment from thousands of posts
+- Tracks mention volume and sentiment trends
+- Data cached for 300 seconds
+
+### Environment Setup
+
+Copy `.env.example` to `.env.local` and add your API keys:
+
+```bash
+cp .env.example .env.local
 ```
+
+Add your GNews API key (optional but recommended):
+```
+NEXT_PUBLIC_GNEWS_API_KEY=your_gnews_api_key_here
+```
+
+The app works without API keys using fallback data, but for the best experience, add the GNews key.
 
 ## 🎨 Customization
 
